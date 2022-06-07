@@ -2,9 +2,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
-import SocialLogin from '../Shared/SocialLogin';
+
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Loading from '../Shared/Loading';
+import { toast } from 'react-toastify';
 
 
 function SignUp() {
@@ -16,13 +17,29 @@ function SignUp() {
     error,
   ] = useCreateUserWithEmailAndPassword(auth);
   const navigate = useNavigate()
+  
 
   if(loading){
     return <Loading />
   }
 
   const onSubmit = data =>{
-    createUserWithEmailAndPassword(data.email, data.password)
+    
+    const {email, password} = data;
+    createUserWithEmailAndPassword(email, password)
+    const currentUser = {emai:email, password:password}
+      fetch(`http://localhost:5000/candidates/${email}`,{
+        method: "PUT",
+        headers:{
+          'content-type':'application/json'
+        },
+        body:JSON.stringify(currentUser)
+      })
+        .then(res=>res.json())
+        .then(data=>{
+          console.log(data);
+          toast('user added')
+        })
     console.log(data)
     };
 
@@ -32,6 +49,7 @@ function SignUp() {
     }
 
     if(user){
+      toast('Successfully added candidates to the list')
       navigate('/')
     }
 
@@ -162,7 +180,7 @@ function SignUp() {
             <div className="divider">OR</div>
           </div>
           <div className="mt-4">
-            <SocialLogin />
+            
           </div>
         </div>
       </div>

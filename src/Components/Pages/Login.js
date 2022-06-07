@@ -1,17 +1,18 @@
 import React from 'react'
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
-import SocialLogin from '../Shared/SocialLogin';
+
 
 function Login() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate()
+  const [user] = useAuthState(auth)
+  // const [jwtToken] = useJWTtoken(user);
   const [
     signInWithEmailAndPassword,
-    user,
     loading,
     error,
   ] = useSignInWithEmailAndPassword(auth);
@@ -124,7 +125,6 @@ function Login() {
             <div className="divider">OR</div>
           </div>
           <div className="mt-4">
-            <SocialLogin />
           </div>
         </div>
       </div>
