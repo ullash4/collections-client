@@ -8,6 +8,9 @@ function Navbar() {
         <NavLink to={'/candidateslist'}>Candidates List</NavLink>
       </li>
       <li>
+        <NavLink to={'/createcandidate'}>Create Candidate</NavLink>
+      </li>
+      <li>
         <NavLink to={'/login'}>Login</NavLink>
       </li>
     </>
