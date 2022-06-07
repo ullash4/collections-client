@@ -1,7 +1,14 @@
+import { signOut } from "firebase/auth";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, NavLink } from "react-router-dom";
+import auth from "../../firebase.init";
 
 function Navbar() {
+  const [user] = useAuthState(auth);
+  const handleSignOut =()=>{
+    signOut(auth)
+  }
   const navLink = (
     <>
       <li>
@@ -10,9 +17,9 @@ function Navbar() {
       <li>
         <NavLink to={'/createcandidate'}>Create Candidate</NavLink>
       </li>
-      <li>
+      {user ? <li><button onClick={handleSignOut} className="btn btn-primary text-white">Sign out</button></li> : <li>
         <NavLink to={'/login'}>Login</NavLink>
-      </li>
+      </li>}
     </>
   );
   return (
@@ -28,16 +35,16 @@ function Navbar() {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
               />
             </svg>
           </label>
           <ul
-            tabindex="0"
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            tabIndex="0"
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 gap-2"
           >
             {navLink}
           </ul>
@@ -45,7 +52,7 @@ function Navbar() {
         <Link to={'/'} className="btn btn-ghost normal-case text-xl">Collections</Link>
       </div>
       <div className="navbar-end hidden lg:flex">
-        <ul className="menu menu-horizontal p-0">{navLink}</ul>
+        <ul className="menu menu-horizontal p-0 gap-3">{navLink}</ul>
       </div>
     </div>
   );

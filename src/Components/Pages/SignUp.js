@@ -1,10 +1,40 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
+import SocialLogin from '../Shared/SocialLogin';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import Loading from '../Shared/Loading';
+
 
 function SignUp() {
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
+  const navigate = useNavigate()
+
+  if(loading){
+    return <Loading />
+  }
+
+  const onSubmit = data =>{
+    createUserWithEmailAndPassword(data.email, data.password)
+    console.log(data)
+    };
+
+    let errorMessage;
+    if(error){
+      errorMessage= <p className="text-red-500"><small>{error.message }</small></p>
+    }
+
+    if(user){
+      navigate('/')
+    }
+
   return (
     <div className="card w-96 mx-auto bg-base-100 shadow-xl my-10">
       <div className="card-body items-center text-center">
@@ -57,6 +87,10 @@ function SignUp() {
                     value: true,
                     message: "Phone Number is required",
                   },
+                  minLength: {
+                    value: 10,
+                    message: "password must be 10 character",
+                  },
                 })}
                 type="text"
                 placeholder="Your Phone Number"
@@ -67,6 +101,9 @@ function SignUp() {
                   <span className="label-text-alt text-red-500">
                     {errors.number.message}
                   </span>
+                )}
+                {errors.number?.type === "minLength" && (
+                  <span className="label-text-alt text-red-500">{errors.number.message}</span>
                 )}
               </label>
             </div>
@@ -82,9 +119,13 @@ function SignUp() {
                     message: "Password is required",
                   },
                   minLength: {
-                    value: 5,
-                    message: "password must be 5 character or long",
+                    value: 6,
+                    message: "password must be 6 character or longer",
                   },
+                  pattern : {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+                    message: "Password should be contain at least One Uppercase , One lowercase, One Numeric, One Special Character",
+                  }
                 })}
                 type="password"
                 placeholder="Password"
@@ -101,9 +142,12 @@ function SignUp() {
                     {errors.password.message}
                   </span>
                 )}
+                {errors.password?.type === "pattern" && (
+                  <span className="label-text-alt text-red-500">{errors.password.message}</span>
+                )}
               </label>
             </div>
-            {/* {errorMessage} */}
+            {errorMessage}
             <input className="btn btn-wide" value="sign up" type="submit" />
           </form>
           <div className="mt-4">
@@ -118,7 +162,7 @@ function SignUp() {
             <div className="divider">OR</div>
           </div>
           <div className="mt-4">
-            {/* <SocialLogIn /> */}
+            <SocialLogin />
           </div>
         </div>
       </div>

@@ -1,10 +1,39 @@
 import React from 'react'
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
+import SocialLogin from '../Shared/SocialLogin';
 
 function Login() {
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const navigate = useNavigate()
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
+  if(loading){
+    return <Loading />
+  }
+
+  const onSubmit = data => {
+    signInWithEmailAndPassword(data.email, data.password)
+    console.log(data)
+  };
+
+  let errorMessage;
+  if(error){
+    errorMessage= <p className="text-red-500"><small>{error.message }</small></p>
+  }
+
+  if(user){
+    navigate('/')
+  }
+
   return (
     <div className="card w-96 mx-auto bg-base-100 shadow-xl">
       <div className="card-body items-center text-center">
@@ -77,7 +106,7 @@ function Login() {
                 )}
               </label>
             </div>
-            {/* {errorMessage} */}
+            {errorMessage}
             <input className="btn btn-wide" value="Log In" type="submit" />
             <button className="btn btn-link btn-sm mt-5">
               Forget Password ?
@@ -95,7 +124,7 @@ function Login() {
             <div className="divider">OR</div>
           </div>
           <div className="mt-4">
-            {/* <SocialLogIn /> */}
+            <SocialLogin />
           </div>
         </div>
       </div>
