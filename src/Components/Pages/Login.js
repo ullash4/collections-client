@@ -17,9 +17,7 @@ function Login() {
     error,
   ] = useSignInWithEmailAndPassword(auth);
 
-  if(loading){
-    return <Loading />
-  }
+  
 
   const onSubmit = data => {
     signInWithEmailAndPassword(data.email, data.password)
@@ -32,11 +30,14 @@ function Login() {
   }
 
   if(user){
-    navigate('/')
+    navigate('/candidateslist')
+  }
+  if(loading){
+    return <Loading />
   }
 
   return (
-    <div className="card w-96 mx-auto bg-base-100 shadow-xl">
+    <div className="card w-96 mx-auto bg-base-100 shadow-xl my-10">
       <div className="card-body items-center text-center">
         <h2 className="card-title text-3xl">Log In</h2>
         <div className="form-control w-full max-w-xs">
@@ -105,26 +106,14 @@ function Login() {
                     {errors.password.message}
                   </span>
                 )}
+                <span className='ml-44 text-primary cursor-pointer'>Forget Password ?</span>
               </label>
             </div>
             {errorMessage}
-            <input className="btn btn-wide" value="Log In" type="submit" />
-            <button className="btn btn-link btn-sm mt-5">
-              Forget Password ?
-            </button>
+            <input className="btn btn-wide btn-primary my-10" value="Log In" type="submit" />
           </form>
-          <div className="mt-4">
-            <p>
-              <small>New to This site ?{" "}
-              <Link className="text-primary" to={"/signup"}>
-                Create Account
-              </Link></small>
-            </p>
-          </div>
-          <div className="mt-4">
-            <div className="divider">OR</div>
-          </div>
-          <div className="mt-4">
+          <div>
+            <Link className='text-primary ' to={'/signup'}>Create new Account</Link>
           </div>
         </div>
       </div>

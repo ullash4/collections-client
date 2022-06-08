@@ -10,6 +10,7 @@ import Navbar from './Components/Shared/Navbar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateCandidate from './Components/Pages/UpdateCandidate';
+import PrivateRoute from './Components/Shared/PrivateRoute';
 
 function App() {
   return (
@@ -18,11 +19,15 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/candidateslist' element={<CandidatesList />} />
-        <Route path='/createcandidate' element={<CreateCandidate />} />
+        
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        
+        <Route element={<PrivateRoute />}>
         <Route path='/updatecandidates/:id' element={<UpdateCandidate/>} />
+        <Route path='/candidateslist' element={<CandidatesList />} />
+        <Route path='/createcandidate' element={<CreateCandidate />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>

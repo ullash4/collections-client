@@ -1,66 +1,65 @@
-import React from 'react'
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
 
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import Loading from '../Shared/Loading';
-import { toast } from 'react-toastify';
-
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import Loading from "../Shared/Loading";
+import { toast } from "react-toastify";
 
 function SignUp() {
-  const { register, formState: { errors }, handleSubmit } = useForm();
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
-  const navigate = useNavigate()
-  
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const navigate = useNavigate();
 
-  if(loading){
-    return <Loading />
+  if (loading) {
+    return <Loading />;
   }
 
-  const onSubmit = data =>{
-    const {email, password} = data;
-    createUserWithEmailAndPassword(email, password)
-    const currentUser = {emai:email, password:password}
-      fetch(`http://localhost:5000/users/${email}`,{
-        method: "PUT",
-        headers:{
-          'content-type':'application/json'
-        },
-        body:JSON.stringify(currentUser)
-      })
-        .then(res=>res.json())
-        .then(data=>{
-          console.log(data);
-          toast('user added')
-        })
-    console.log(data)
-    };
+  const onSubmit = (data) => {
+    const { email, password } = data;
+    createUserWithEmailAndPassword(email, password);
+    const currentUser = { emai: email, password: password };
+    fetch(`https://thawing-spire-56494.herokuapp.com/users/${email}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(currentUser),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        toast("user added");
+      });
+    console.log(data);
+  };
 
-    let errorMessage;
-    if(error){
-      errorMessage= <p className="text-red-500"><small>{error.message }</small></p>
-    }
+  let errorMessage;
+  if (error) {
+    errorMessage = (
+      <p className="text-red-500">
+        <small>{error.message}</small>
+      </p>
+    );
+  }
 
-    if(user){
-      toast('Successfully added candidates to the list')
-      navigate('/')
-    }
+  if (user) {
+    toast("Added user to database");
+    navigate("/candidateslist");
+  }
 
   return (
     <div className="card w-96 mx-auto bg-base-100 shadow-xl my-10">
       <div className="card-body items-center text-center">
         <h2 className="card-title text-3xl">Sign Up</h2>
         <div className="form-control w-full max-w-xs">
-
           <form onSubmit={handleSubmit(onSubmit)}>
-           
-
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -120,7 +119,9 @@ function SignUp() {
                   </span>
                 )}
                 {errors.number?.type === "minLength" && (
-                  <span className="label-text-alt text-red-500">{errors.number.message}</span>
+                  <span className="label-text-alt text-red-500">
+                    {errors.number.message}
+                  </span>
                 )}
               </label>
             </div>
@@ -139,10 +140,11 @@ function SignUp() {
                     value: 6,
                     message: "password must be 6 character or longer",
                   },
-                  pattern : {
+                  pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-                    message: "Password should be contain at least One Uppercase , One lowercase, One Numeric, One Special Character",
-                  }
+                    message:
+                      "Password should be contain at least One Uppercase , One lowercase, One Numeric, One Special Character",
+                  },
                 })}
                 type="password"
                 placeholder="Password"
@@ -160,14 +162,20 @@ function SignUp() {
                   </span>
                 )}
                 {errors.password?.type === "pattern" && (
-                  <span className="label-text-alt text-red-500">{errors.password.message}</span>
+                  <span className="label-text-alt text-red-500">
+                    {errors.password.message}
+                  </span>
                 )}
               </label>
             </div>
             {errorMessage}
-            <input className="btn btn-wide" value="sign up" type="submit" />
+            <input
+              className="btn btn-wide btn-primary my-7"
+              value="sign up"
+              type="submit"
+            />
           </form>
-          <div className="mt-4">
+          <div className=" ">
             <p>
               Already have account ?{" "}
               <Link className="text-primary" to={"/login"}>
@@ -175,16 +183,10 @@ function SignUp() {
               </Link>
             </p>
           </div>
-          <div className="mt-4">
-            <div className="divider">OR</div>
-          </div>
-          <div className="mt-4">
-            
-          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;

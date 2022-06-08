@@ -3,6 +3,7 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, NavLink } from "react-router-dom";
 import auth from "../../firebase.init";
+import { FiUsers } from 'react-icons/fi';
 
 function Navbar() {
   const [user] = useAuthState(auth);
@@ -23,7 +24,7 @@ function Navbar() {
     </>
   );
   return (
-    <div className="navbar bg-base-100 lg:px-20">
+    <div className="navbar bg-base-200 lg:px-20">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -49,7 +50,7 @@ function Navbar() {
             {navLink}
           </ul>
         </div>
-        <Link to={'/'} className="btn btn-ghost normal-case text-xl">Collections</Link>
+        <Link to={'/'} className="btn btn-ghost normal-case text-xl"> <FiUsers className="text-4xl text-primary" /> </Link>
       </div>
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal p-0 gap-3">{navLink}</ul>

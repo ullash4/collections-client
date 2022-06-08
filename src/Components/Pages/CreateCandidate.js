@@ -5,84 +5,78 @@ import { toast } from "react-toastify";
 
 function CreateCandidate() {
   const { register, handleSubmit } = useForm();
-  const onSubmit = data => {
-    const {name, email, address, state, dateOfBirth, pincode}= data;
-    const candidate ={
+  const onSubmit = (data) => {
+    const { name, email, address, state, dateOfBirth, pincode } = data;
+    const candidate = {
       name: name,
-      email:email,
-      address:address,
-      dateOfBirth:dateOfBirth,
+      email: email,
+      address: address,
+      dateOfBirth: dateOfBirth,
       pincode: pincode,
-      state:state
-    }
-    fetch('http://localhost:5000/candidates',{
-      method:"POST",
-      headers:{
-        'content-type':'application/json'
+      state: state,
+    };
+    fetch("https://thawing-spire-56494.herokuapp.com/candidates", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
       },
-      body:JSON.stringify(candidate)
+      body: JSON.stringify(candidate),
     })
-    .then(res=>res.json())
-    .then(result=>{
-      toast('Candidate created successfully')
-      console.log(result);
-    })
-    console.log(data)
+      .then((res) => res.json())
+      .then((result) => {
+        toast("Candidate created successfully");
+        console.log(result);
+      });
+    console.log(data);
   };
   return (
-    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 my-10">
-      <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white">
+    <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 my-10">
+      <h2 className="text-lg font-semibold text-gray-700 capitalize dark:text-white">
         Create Candidate
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
           <div>
-            <label class="text-gray-700 dark:text-gray-200" >
-              Name
-            </label>
+            <label className="text-gray-700 dark:text-gray-200">Name</label>
             <input
               {...register("name")}
               type="text"
               required
-              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
           </div>
 
           <div>
-            <label class="text-gray-700 dark:text-gray-200" >
-              Email
-            </label>
+            <label className="text-gray-700 dark:text-gray-200">Email</label>
             <input
               {...register("email")}
               required
               type="email"
-              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
           </div>
 
           <div>
-            <label class="text-gray-700 dark:text-gray-200" >
+            <label className="text-gray-700 dark:text-gray-200">
               Date of Birth
             </label>
             <input
               {...register("dateOfBirth")}
               required
               type="text"
-              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
           </div>
 
           <div>
-            <label
-              class="text-gray-700 dark:text-gray-200"
-              
-            >
-              State
-            </label>
+            <label className="text-gray-700 dark:text-gray-200">State</label>
 
-            <select required {...register("state")}  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
-            
+            <select
+              required
+              {...register("state")}
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+            >
               <option>Andhra Pradesh</option>
               <option>Arunachal Pradesh </option>
               <option>Assam</option>
@@ -114,39 +108,35 @@ function CreateCandidate() {
           </div>
 
           <div>
-            <label class="text-gray-700 dark:text-gray-200" >
-              Address
-            </label>
+            <label className="text-gray-700 dark:text-gray-200">Address</label>
             <input
               {...register("address")}
               required
               type="text"
-              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
           </div>
 
           <div>
-            <label
-              class="text-gray-700 dark:text-gray-200"
-              
-            >
-              Pin Code
-            </label>
+            <label className="text-gray-700 dark:text-gray-200">Pin Code</label>
             <input
               {...register("pincode")}
               required
               type="text"
-              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
           </div>
         </div>
 
-        <div class="flex items-center justify-end gap-5 mt-6">
-        <Link to={'/candidateslist'} class="btn btn-outline btn-primary">
+        <div className="flex items-center justify-end gap-5 mt-6">
+          <Link to={"/candidateslist"} className="btn btn-outline btn-primary">
             Cancel
           </Link>
-          <input class="btn btn-primary text-white" type="submit" value="Create" />
-          
+          <input
+            className="btn btn-primary text-white"
+            type="submit"
+            value="Create"
+          />
         </div>
       </form>
     </section>

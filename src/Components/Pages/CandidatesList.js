@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CandidateRow from "./CandidateRow";
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus } from "react-icons/ai";
+import Loading from "../Shared/Loading";
 
 function CandidatesList() {
   const [candidates, setCandidates] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:5000/candidates")
+    fetch("https://thawing-spire-56494.herokuapp.com/candidates")
       .then((res) => res.json())
-      .then((data) => setCandidates(data));
+      .then((data) => {
+        setIsloading(false);
+        setCandidates(data);
+      });
   }, [candidates]);
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="lg:px-20 my-10">
-      <h1 className="mb-5">CandidatesList{candidates.length}</h1>
-      <div class="overflow-x-auto">
-        <table class="table table-zebra w-full">
+      <h1 className="mb-5 text-xl font-semibold">
+        Candidates List : {candidates.length}
+      </h1>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra  w-full">
           <thead>
             <tr>
               <th></th>
@@ -36,7 +46,13 @@ function CandidatesList() {
           </tbody>
         </table>
       </div>
-      <Link className="mt-5 max-w-xs text-2xl flex items-center gap-2 text-primary" to={'/createcandidate'}> <AiOutlinePlus className="" /> Add New Candidate </Link>
+      <Link
+        className="mt-5 max-w-xs text-2xl flex items-center gap-2 text-primary"
+        to={"/createcandidate"}
+      >
+        {" "}
+        <AiOutlinePlus className="" /> Add New Candidate{" "}
+      </Link>
     </div>
   );
 }
