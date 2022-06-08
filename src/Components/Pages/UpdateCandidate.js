@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 function UpdateCandidate() {
     const { register, handleSubmit } = useForm();
@@ -10,7 +11,7 @@ function UpdateCandidate() {
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [state, setState] = useState("");
     const [address, setAddress] = useState("");
-    const [pinCode, setPinCode] = useState("");
+    const [pincode, setPincode] = useState("");
     const {id} = useParams()
     useEffect(()=>{
         fetch(`http://localhost:5000/candidate/${id}`)
@@ -18,7 +19,28 @@ function UpdateCandidate() {
         .then(data=>setCandidate(data))
     },[id])
     const onSubmit =(data)=>{
-        console.log(data);
+        const {name, email, address, state, dateOfBirth, pincode}= data;
+        const updatedCandidate={
+            name: name || candidate.name,
+      email:email || candidate.email,
+      address:address || candidate.address,
+      dateOfBirth:dateOfBirth || candidate.dateOfBirth,
+      pincode: pincode || candidate.pincode,
+      state:state || candidate.state,
+        }
+        fetch(`http://localhost:5000/candidate/${id}`,{
+            method: "PUT",
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(updatedCandidate)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+            toast.success("You made cange")
+        })
+        console.log(updatedCandidate);
     }
   return (
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 my-10">
@@ -120,7 +142,7 @@ function UpdateCandidate() {
               Address
             </label>
             <input
-              {...register("Address")}
+              {...register("address")}
               required
               value={address||candidate.address}
               onChange={(e) => setAddress(e.target.value)}
@@ -137,10 +159,10 @@ function UpdateCandidate() {
               Pin Code
             </label>
             <input
-              {...register("pinCode")}
+              {...register("pincode")}
               required
-              value={pinCode || candidate.pinCode}
-              onChange={(e) => setPinCode(e.target.value)}
+              value={pincode || candidate.pincode}
+              onChange={(e) => setPincode(e.target.value)}
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />

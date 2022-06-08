@@ -118,7 +118,7 @@ function CreateCandidate() {
               Address
             </label>
             <input
-              {...register("Address")}
+              {...register("address")}
               required
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
@@ -133,7 +133,7 @@ function CreateCandidate() {
               Pin Code
             </label>
             <input
-              {...register("pinCode")}
+              {...register("pincode")}
               required
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
@@ -145,7 +145,7 @@ function CreateCandidate() {
         <Link to={'/candidateslist'} class="btn btn-outline btn-primary">
             Cancel
           </Link>
-          <input class="btn btn-primary" type="submit" value="Create" />
+          <input class="btn btn-primary text-white" type="submit" value="Create" />
           
         </div>
       </form>
