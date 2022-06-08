@@ -24,11 +24,10 @@ function SignUp() {
   }
 
   const onSubmit = data =>{
-    
     const {email, password} = data;
     createUserWithEmailAndPassword(email, password)
     const currentUser = {emai:email, password:password}
-      fetch(`http://localhost:5000/candidates/${email}`,{
+      fetch(`http://localhost:5000/users/${email}`,{
         method: "PUT",
         headers:{
           'content-type':'application/json'

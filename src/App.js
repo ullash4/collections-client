@@ -9,6 +9,7 @@ import SignUp from './Components/Pages/SignUp';
 import Navbar from './Components/Shared/Navbar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UpdateCandidate from './Components/Pages/UpdateCandidate';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/createcandidate' element={<CreateCandidate />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/updatecandidates/:id' element={<UpdateCandidate/>} />
       </Routes>
       <ToastContainer />
     </div>

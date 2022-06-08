@@ -9,7 +9,7 @@ function CandidatesList() {
     fetch("http://localhost:5000/candidates")
       .then((res) => res.json())
       .then((data) => setCandidates(data));
-  }, []);
+  }, [candidates]);
   return (
     <div className="lg:px-20 my-10">
       <h1 className="mb-5">CandidatesList{candidates.length}</h1>

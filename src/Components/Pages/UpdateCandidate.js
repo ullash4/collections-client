@@ -1,38 +1,29 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { Link, useParams } from 'react-router-dom'
 
-function CreateCandidate() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = data => {
-    const {name, email, address, state, dateOfBirth, pincode}= data;
-    const candidate ={
-      name: name,
-      email:email,
-      address:address,
-      dateOfBirth:dateOfBirth,
-      pincode: pincode,
-      state:state
+function UpdateCandidate() {
+    const { register, handleSubmit } = useForm();
+    const [candidate, setCandidate] = useState({})
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
+    const [state, setState] = useState("");
+    const [address, setAddress] = useState("");
+    const [pinCode, setPinCode] = useState("");
+    const {id} = useParams()
+    useEffect(()=>{
+        fetch(`http://localhost:5000/candidate/${id}`)
+        .then(res=>res.json())
+        .then(data=>setCandidate(data))
+    },[id])
+    const onSubmit =(data)=>{
+        console.log(data);
     }
-    fetch('http://localhost:5000/candidates',{
-      method:"POST",
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify(candidate)
-    })
-    .then(res=>res.json())
-    .then(result=>{
-      toast('Candidate created successfully')
-      console.log(result);
-    })
-    console.log(data)
-  };
   return (
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 my-10">
       <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white">
-        Create Candidate
+        Update Candidate {candidate.name}
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,6 +35,8 @@ function CreateCandidate() {
             <input
               {...register("name")}
               type="text"
+              value={name ||candidate.name}
+              onChange={(e) => setName(e.target.value)}
               required
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
@@ -56,6 +49,8 @@ function CreateCandidate() {
             <input
               {...register("email")}
               required
+              value={email || candidate.email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
@@ -68,6 +63,8 @@ function CreateCandidate() {
             <input
               {...register("dateOfBirth")}
               required
+              value={dateOfBirth ||candidate.dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
@@ -81,7 +78,12 @@ function CreateCandidate() {
               State
             </label>
 
-            <select required {...register("state")}  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+            <select
+             required
+              value={state || candidate.state}
+              onChange={(e) => setState(e.target.value)}
+              {...register("state")}
+              class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
             
               <option>Andhra Pradesh</option>
               <option>Arunachal Pradesh </option>
@@ -120,6 +122,8 @@ function CreateCandidate() {
             <input
               {...register("Address")}
               required
+              value={address||candidate.address}
+              onChange={(e) => setAddress(e.target.value)}
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
@@ -135,6 +139,8 @@ function CreateCandidate() {
             <input
               {...register("pinCode")}
               required
+              value={pinCode || candidate.pinCode}
+              onChange={(e) => setPinCode(e.target.value)}
               type="text"
               class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
             />
@@ -145,12 +151,12 @@ function CreateCandidate() {
         <Link to={'/candidateslist'} class="btn btn-outline btn-primary">
             Cancel
           </Link>
-          <input class="btn btn-primary" type="submit" value="Create" />
+          <input class="btn btn-primary" type="submit" value="Update" />
           
         </div>
       </form>
     </section>
-  );
+  )
 }
 
-export default CreateCandidate;
+export default UpdateCandidate
